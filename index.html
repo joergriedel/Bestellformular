@@ -3,145 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bestellformular Pharma</title>
+    <title>Apotheken-Bestellfix v2.0</title>
     <style>
         :root {
-            --primary: #005293; /* Apotheken-Blau-Stil */
-            --secondary: #f1f5f9;
-            --accent: #e11d48;
-            --border: #cbd5e1;
+            --brand-blue: #005293;
+            --light-bg: #f4f7f9;
+            --border-grey: #cbd5e1;
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: #f8fafc;
-            color: #334155;
+            font-family: Arial, sans-serif;
+            background-color: #e5e7eb;
             margin: 0;
             padding: 20px;
+            display: flex;
+            justify-content: center;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 0 auto;
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            width: 210mm; /* A4 Breite */
+            min-height: 297mm;
+            padding: 20mm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
         }
 
         header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--primary);
-            margin-bottom: 30px;
-            padding-bottom: 15px;
+            border-bottom: 3px solid var(--brand-blue);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
         }
 
-        .customer-grid {
+        .header-logo h1 { color: var(--brand-blue); margin: 0; font-size: 24px; }
+        
+        .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-bottom: 30px;
+            background: var(--light-bg);
+            padding: 15px;
+            border-radius: 5px;
         }
 
-        .field {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .field label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--primary);
-        }
-
-        input[type="text"], input[type="email"], select {
-            padding: 8px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-        }
+        .info-field label { display: block; font-size: 11px; font-weight: bold; color: #64748b; }
+        .info-field span { font-size: 14px; font-weight: 600; color: #1e293b; }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
+            font-size: 12px;
+            margin-bottom: 20px;
         }
 
         th {
-            background-color: var(--primary);
+            background: var(--brand-blue);
             color: white;
-            padding: 10px;
+            padding: 8px;
             text-align: left;
         }
 
-        tr:nth-child(even) { background-color: #f8fafc; }
-
         td {
-            padding: 10px;
+            padding: 8px;
             border-bottom: 1px solid #e2e8f0;
         }
 
-        .price-col { text-align: right; font-family: monospace; }
-        
-        .qty-select {
-            width: 100%;
-            padding: 5px;
-            font-weight: bold;
-            border: 2px solid var(--primary);
-        }
+        .cat-head { background: #f1f5f9; font-weight: bold; }
 
-        .category-row {
-            background-color: #e2e8f0 !important;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .signature-wrap {
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .sig-canvas-area {
-            border: 1px solid var(--border);
+        select {
+            width: 60px;
+            padding: 4px;
+            border: 1px solid var(--brand-blue);
+            border-radius: 3px;
             background: #fff;
+            cursor: pointer;
+        }
+
+        /* Unterschriftenfeld Sichtbarkeit */
+        .sig-container {
+            margin-top: 30px;
+            width: 350px;
+        }
+
+        .sig-box {
+            border: 2px solid #94a3b8;
+            background: #ffffff;
+            height: 120px;
+            position: relative;
+            touch-action: none; /* Wichtig für Mobile */
         }
 
         canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
             width: 100%;
-            height: 150px;
+            height: 100%;
             cursor: crosshair;
-            touch-action: none;
         }
 
-        .total-box {
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: right;
-        }
-
-        .total-box span { font-size: 1.5rem; display: block; }
-
-        .btn {
-            background: #22c55e;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
+        .footer-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
             margin-top: 20px;
         }
 
-        .btn-clear { background: #94a3b8; font-size: 0.8rem; margin-top: 5px; }
+        .total-display {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--brand-blue);
+            background: var(--light-bg);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
         @media print {
-            .btn, .btn-clear { display: none; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; }
+            button { display: none; }
         }
     </style>
 </head>
@@ -149,22 +142,32 @@
 
 <div class="container">
     <header>
-        <h1>Bestellschein Apotheke</h1>
-        <div style="text-align: right">Datum: <span id="currentDate"></span></div>
+        <div class="header-logo">
+            <h1>Direkt-Bestellung</h1>
+            <p style="margin:0; font-size: 12px;">Pharma-Großhandel Muster GmbH</p>
+        </div>
+        <div style="text-align: right; font-size: 12px;">
+            Beleg-Nr: 2024-88392<br>
+            Datum: 24.05.2024
+        </div>
     </header>
 
-    <div class="customer-grid">
-        <div class="field">
-            <label>Apotheke / Stempel</label>
-            <input type="text" placeholder="Name der Apotheke">
+    <div class="info-grid">
+        <div class="info-field">
+            <label>APOTHEKE / KUNDE</label>
+            <span>Löwen-Apotheke am Markt</span>
         </div>
-        <div class="field">
-            <label>Kundennummer</label>
-            <input type="text" placeholder="Kunden-Nr.">
+        <div class="info-field">
+            <label>KUNDEN-NUMMER</label>
+            <span>KD-99200-X</span>
         </div>
-        <div class="field">
-            <label>Ansprechpartner</label>
-            <input type="text" placeholder="Name">
+        <div class="info-field">
+            <label>STRASSE / NR</label>
+            <span>Hauptstraße 12</span>
+        </div>
+        <div class="info-field">
+            <label>PLZ / ORT</label>
+            <span>12345 Musterstadt</span>
         </div>
     </div>
 
@@ -172,50 +175,146 @@
         <table>
             <thead>
                 <tr>
-                    <th>Produktbezeichnung</th>
+                    <th>Bezeichnung</th>
                     <th>Inhalt</th>
                     <th>PZN</th>
-                    <th>AEP (Netto)</th>
-                    <th>AVP (Brutto)</th>
+                    <th>AEP (€)</th>
                     <th>VE</th>
-                    <th style="width: 100px;">Bestellmenge</th>
+                    <th>Menge</th>
                 </tr>
             </thead>
-            <tbody id="productTable">
-                <tr class="category-row"><td colspan="7">Grippostad®</td></tr>
-                <tr data-price="9.65">
+            <tbody>
+                <tr class="cat-head"><td colspan="6">Grippostad® Sortiment</td></tr>
+                <tr class="product-row" data-price="9.65">
                     <td>Grippostad® C Kapseln</td>
                     <td>24 Stk.</td>
                     <td>00571748</td>
-                    <td class="price-col">9,65 €</td>
-                    <td class="price-col">16,99 €</td>
-                    <td>10 Stk.</td>
-                    <td><select class="qty-select"></select></td>
+                    <td>9,65</td>
+                    <td>10</td>
+                    <td><select class="qty"></select></td>
                 </tr>
-                <tr data-price="5.55">
-                    <td>Grippostad® Complex (Orange)</td>
+                <tr class="product-row" data-price="5.55">
+                    <td>Grippostad® Complex Orange</td>
                     <td>10 Stk.</td>
                     <td>16903460</td>
-                    <td class="price-col">5,55 €</td>
-                    <td class="price-col">10,36 €</td>
-                    <td>6 Stk.</td>
-                    <td><select class="qty-select"></select></td>
+                    <td>5,55</td>
+                    <td>6</td>
+                    <td><select class="qty"></select></td>
                 </tr>
-                <tr class="category-row"><td colspan="7">LEMOCIN®</td></tr>
-                <tr data-price="5.49">
+                <tr class="cat-head"><td colspan="6">LEMOCIN® Sortiment</td></tr>
+                <tr class="product-row" data-price="5.49">
                     <td>LEMOCIN® gegen Halsschmerz</td>
                     <td>20 Stk.</td>
                     <td>12397155</td>
-                    <td class="price-col">5,49 €</td>
-                    <td class="price-col">10,26 €</td>
-                    <td>10 Stk.</td>
-                    <td><select class="qty-select"></select></td>
+                    <td>5,49</td>
+                    <td>10</td>
+                    <td><select class="qty"></select></td>
                 </tr>
-                <tr data-price="7.21">
+                <tr class="product-row" data-price="7.21">
                     <td>LEMOCIN® Spray Flurbiprofen</td>
                     <td>15 ml</td>
                     <td>18661506</td>
-                    <td class="price-col">7,21 €</td>
-                    <td class="price-col">13,47 €</td>
-                    <td>1 Stk.</td>
-                    <td><select class="qty-select"></select></td>
+                    <td>7,21</td>
+                    <td>1</td>
+                    <td><select class="qty"></select></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer-action">
+            <div class="sig-container">
+                <label style="font-size: 11px; font-weight: bold;">Rechtsverbindliche Unterschrift:</label>
+                <div class="sig-box">
+                    <canvas id="signatureCanvas"></canvas>
+                </div>
+                <small style="color: #94a3b8; cursor: pointer;" onclick="clearSig()">Feld löschen</small>
+            </div>
+            
+            <div style="text-align: right;">
+                <div class="total-display">
+                    Gesamt Netto: <span id="totalSum">0,00 €</span>
+                </div>
+                <button type="submit" style="margin-top: 10px;">Bestellung absenden</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // 1. Dropdowns befüllen & Summenfunktion
+    const selects = document.querySelectorAll('.qty');
+    const totalEl = document.getElementById('totalSum');
+
+    selects.forEach(sel => {
+        // Dropdown Optionen 0-20
+        for(let i=0; i<=20; i++) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = i;
+            sel.appendChild(opt);
+        }
+        
+        sel.addEventListener('change', () => {
+            let sum = 0;
+            document.querySelectorAll('.product-row').forEach(row => {
+                const price = parseFloat(row.getAttribute('data-price'));
+                const amount = parseInt(row.querySelector('.qty').value) || 0;
+                sum += price * amount;
+            });
+            totalEl.textContent = sum.toLocaleString('de-DE', {style: 'currency', currency: 'EUR'});
+        });
+    });
+
+    // 2. Unterschriften-Logik (Canvas)
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    // Canvas Größe explizit setzen
+    function initCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        ctx.strokeStyle = "#1e293b";
+        ctx.lineWidth = 2;
+    }
+
+    window.onload = initCanvas;
+
+    function getMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left,
+            y: (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top
+        };
+    }
+
+    function start(e) { drawing = true; ctx.beginPath(); const p = getMousePos(e); ctx.moveTo(p.x, p.y); }
+    function move(e) { 
+        if(!drawing) return; 
+        if(e.touches) e.preventDefault(); 
+        const p = getMousePos(e); 
+        ctx.lineTo(p.x, p.y); 
+        ctx.stroke(); 
+    }
+    function stop() { drawing = false; }
+
+    canvas.addEventListener('mousedown', start);
+    canvas.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', stop);
+
+    canvas.addEventListener('touchstart', start);
+    canvas.addEventListener('touchmove', move);
+    canvas.addEventListener('touchend', stop);
+
+    function clearSig() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    document.getElementById('orderForm').onsubmit = (e) => {
+        e.preventDefault();
+        alert("Bestellung erfolgreich simuliert!");
+    };
+</script>
+
+</body>
+</html>
